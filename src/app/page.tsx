@@ -4,25 +4,39 @@ import { useState } from "react";
 import Modal from "./components/Modal";
 import Input from "./components/input";
 import { useUsers } from "./hooks/useUsers";
-import { User } from "./domain/users";
+import { User } from "./domain/listUsers";
 import { useAddUser } from "./hooks/addUser";
+import { AddUsers } from "./domain/addUser";
+import { useDeleteUser } from "./hooks/deteleUser";
+import { useRouter } from 'next/navigation';
 
 
 export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [newUser, setNewUser] = useState<AddUsers>({
+    email: '',
+    name: ''
+  })
   const { data } = useUsers();
   const { mutate } = useAddUser();
+  const { mutate: deleteUser } = useDeleteUser();
+  const router = useRouter();
 
   const handleAddUser = () => {
-    mutate({
-      email: '123',
-      name: "123",
-      id: '23'
-    })
-    // console.log(newUser); // Aqui você pode adicionar a lógica para adicionar o usuário
-    setIsModalOpen(false); // Fecha a modal após adicionar
+    mutate(newUser);
+    setIsModalOpen(false);
   };
 
+  const handleDelete = (id: string) => {
+    const confirmed = window.confirm("Tem certeza que deseja excluir este usuário?");
+    if (confirmed) {
+      deleteUser(id);
+    }
+  };
+
+  const handleEdit = (id: string) => {
+    router.push(`/users/${id}/edit`);
+  };
 
   return (
     <div className="container mx-auto p-6">
@@ -49,13 +63,13 @@ export default function Home() {
               <td className="px-6 py-4 text-sm text-gray-900">{item.email}</td>
               <td className="px-6 py-4 text-sm">
                 <button
-                  // onClick={() => handleEdit(item.id)}
+                  onClick={() => handleEdit(item.id)}
                   className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 mr-2"
                 >
                   Editar
                 </button>
                 <button
-                  // onClick={() => handleDelete(item.id)}
+                  onClick={() => handleDelete(item.id)}
                   className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
                 >
                   Excluir
@@ -73,15 +87,25 @@ export default function Home() {
       >
         <div className="mb-4">
           <Input label="Nome"
-            onChange={() => console.log()}
-            value="123"
+            onChange={(e) =>
+              setNewUser((prev) => ({
+                ...prev,
+                name: e.target.value,
+              }))
+            }
+            value={newUser?.name}
             alt="Input de nome do usuário"
             placeholder="Coloque o nome do usuário" />
         </div>
         <div className="mb-4">
-          <Input label="Nome"
-            onChange={() => console.log()}
-            value="123"
+          <Input label="Email"
+            onChange={(e) =>
+              setNewUser((prev) => ({
+                ...prev,
+                email: e.target.value,
+              }))
+            }
+            value={newUser?.email}
             alt="Input de email do úsuario"
             placeholder="Coloque o email do usuário" />
         </div>

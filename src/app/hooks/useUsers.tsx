@@ -1,5 +1,5 @@
 "use client"
-import { User } from '../domain/users';
+import { User } from '../domain/listUsers';
 import { useQuery } from "@tanstack/react-query";
 
 const fetchUsers = async (): Promise<User[]> => {

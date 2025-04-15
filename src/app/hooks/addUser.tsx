@@ -1,16 +1,15 @@
-'use client'
-
 "use client"
-import { User } from '../domain/users';
-import { useMutation } from "@tanstack/react-query";
+import { AddUsers } from '../domain/addUser';
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-const addUser = async (user: Partial<User>): Promise<User> => {
+const addUser = async (user: Partial<AddUsers>): Promise<AddUsers> => {
     const response = await fetch('http://localhost:8080/users', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(user),
+     
     });
   
     if (!response.ok) {
@@ -21,13 +20,19 @@ const addUser = async (user: Partial<User>): Promise<User> => {
   };
   
   export const useAddUser = () => {
-    return useMutation<User, Error, User>({
+    const queryClient = useQueryClient();
+
+    return useMutation<AddUsers, Error, AddUsers>({
       mutationFn: addUser,
       onError: (error) => {
         console.error('Error adding user:', error);
       },
-      onSuccess: (data) => {
-        console.log('User added successfully:', data);
+      onSuccess: () => {
+        setTimeout(() => {
+            queryClient.invalidateQueries({ queryKey: ['users'] });
+        }, 2000);
       },
     });
   };
+
+  
