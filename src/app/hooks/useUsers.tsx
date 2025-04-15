@@ -3,7 +3,7 @@ import { User } from '../domain/listUsers';
 import { useQuery } from "@tanstack/react-query";
 
 const fetchUsers = async (): Promise<User[]> => {
-    const response = await fetch('http://localhost:8080/users');
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users`);
     if (!response.ok) throw new Error('Error fetching users');
     return response.json();
 };

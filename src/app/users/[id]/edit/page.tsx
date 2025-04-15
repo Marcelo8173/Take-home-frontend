@@ -6,15 +6,17 @@ import { useUserById } from "@/app/hooks/userUsersById";
 import { useUpdateUser } from "@/app/hooks/editUser";
 import { useRouter } from "next/navigation";
 
-export default function EditUser({ params }: { params: { id: string } }) {
-    const { id } = params;
+interface EditUserClientProps {
+    id: string;
+  }
+function EditUser({ id }: EditUserClientProps){
     const { data } = useUserById(id);
     const { mutate } = useUpdateUser();
     const router = useRouter();
 
     const [editUser, setEditUser] = useState({
-        name: data?.name,
-        email: data?.email,
+        name: data?.name || '',
+        email: data?.email || '',
     });
 
     useEffect(() => {
@@ -84,3 +86,5 @@ export default function EditUser({ params }: { params: { id: string } }) {
         </div>
     );
 }
+
+export default EditUser;

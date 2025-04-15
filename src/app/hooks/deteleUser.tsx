@@ -6,7 +6,7 @@ export const useDeleteUser = () => {
 
     return useMutation({
         mutationFn: async (id: string) => {
-            const response = await fetch(`http://localhost:8080/users/${id}`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/${id}`, {
                 method: 'DELETE',
             });
 

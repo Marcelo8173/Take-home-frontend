@@ -8,7 +8,7 @@ export const useUpdateUser = () => {
 
   return useMutation({
     mutationFn: async (payload: { id: string; user: AddUsers }) => {
-      const response = await fetch(`http://localhost:8080/users/${payload.id}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/${payload.id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

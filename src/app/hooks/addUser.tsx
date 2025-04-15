@@ -3,8 +3,8 @@ import { AddUsers } from '../domain/addUser';
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const addUser = async (user: Partial<AddUsers>): Promise<AddUsers> => {
-    const response = await fetch('http://localhost:8080/users', {
-      method: 'POST',
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users`, {
+    method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
