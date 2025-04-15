@@ -32,3 +32,8 @@ Para iniciar o servidor de desenvolvimento, execute:
 ```bash
 npm run dev
 ```
+Repositório do Backend
+Você pode acessar o repositório do frontend no link abaixo:
+ ```bash
+https://github.com/Marcelo8173/Take-home-backend/tree/main
+```
